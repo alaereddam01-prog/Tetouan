@@ -19,3 +19,38 @@
 @keyframes hero-arrive{from{transform:scale(1.13);opacity:.6}to{transform:translateY(var(--hero-shift,0px)) scale(1.08);opacity:1}}
 @media(max-width:640px){.header-actions .search-button{display:flex;width:34px}.header-actions .menu-button{width:34px}.hero-top{font-size:10px;letter-spacing:1px}.hero-caption,.scroll-hint{display:none}.hero-description{font-size:16px}.hero-title{font-size:56px}.hero-buttons .button{font-size:14px}.hero-buttons .text-button{font-size:13px}.card-meta{letter-spacing:0}.nav a{font-size:16px}.eyebrow{letter-spacing:1px}.footer-bottom{font-size:12px}.sport-banner .eyebrow{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-delay:0ms!important;transition-delay:0ms!important}}
+/* Ambient artwork sits behind the guide and never captures interaction. */
+body{isolation:isolate}
+#header{position:relative;z-index:20}
+#content,#footer{position:relative;z-index:1}
+.ambient-doves{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.ambient-doves img{position:absolute;right:1%;top:19%;width:min(620px,65vw);height:auto;object-fit:contain;opacity:.075;animation:dove-drift 38s ease-in-out infinite alternate;transform:rotate(-8deg)}
+.ambient-doves img:nth-child(2){width:min(450px,52vw);left:-12%;right:auto;top:68%;opacity:.045;animation-duration:49s;animation-delay:-21s;transform:rotate(12deg)}
+@keyframes dove-drift{from{translate:-30px 20px}to{translate:55px -45px}}
+.language-control{display:flex;align-items:center;position:relative;gap:5px;border:1px solid var(--line);border-radius:30px;padding:8px 10px;background:var(--paper)}
+.language-control svg{width:15px;height:15px;flex:none}
+.language-control select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.language-code{font:600 12px 'DM Sans',sans-serif}.language-control .language-chevron{display:grid;place-items:center;width:12px;height:12px}.language-chevron svg{width:12px;height:12px;transform:rotate(90deg)}
+.language-control:focus-within{outline:2px solid var(--forest);outline-offset:3px}
+.footer-top{grid-template-columns:1.4fr 1fr 1.1fr 1.1fr;gap:30px}
+.owner-footer{overflow-wrap:anywhere}.owner-footer span{font-size:15px;margin-bottom:14px}
+.club-crest{width:100%;max-width:320px;justify-self:end;text-align:center}
+.club-crest img{width:100%;height:auto;display:block;border-radius:18px;box-shadow:0 10px 35px #69132144}
+.club-crest a{display:inline-block;font-size:12px;margin-top:16px;text-decoration:underline;text-underline-offset:4px}
+.hd-label{letter-spacing:1px!important;opacity:.85}
+.photo-resolution{font-size:13px;color:var(--muted)}.photo-resolution a{text-decoration:underline;text-underline-offset:3px}
+.asset-notes{border-left:3px solid var(--forest);padding:12px 20px;margin-block:24px;font-size:14px;color:var(--muted)}
+.transport-intro{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:30px;border:1px solid var(--line);border-radius:22px;background:#e9eee4;margin-bottom:20px}
+.transport-brand{display:flex;gap:20px;align-items:center}.transport-brand>span{display:grid;place-items:center;width:70px;height:70px;border-radius:50%;background:var(--forest);color:var(--lime);flex:none}.transport-brand>span svg{width:30px;height:30px}
+.transport-brand small,.bus-card small{font-size:10px;letter-spacing:1.6px;color:var(--muted)}.transport-brand h2{font-size:32px;margin-block:7px}.transport-brand p{font-size:13px;color:var(--muted)}
+.transport-note{border:1px solid #d6d7bf;background:#f3f2df;border-radius:18px;padding:25px;font-size:14px;line-height:1.85;margin-bottom:30px}.transport-note strong{font-size:13px;display:block;margin-bottom:9px}
+.bus-tools{margin-bottom:26px}.bus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:35px}
+.bus-card{display:flex;gap:20px;align-items:start;padding:25px;border:1px solid var(--line);border-radius:20px;background:#fafaf5e8;transition:transform .25s,border-color .25s}
+.bus-card:hover{transform:translateY(-3px);border-color:var(--forest)}.bus-number{width:52px;height:52px;display:grid;place-items:center;background:var(--forest);color:var(--lime);border-radius:15px;font:600 25px 'DM Sans',sans-serif;flex:none}.bus-card h2{font-size:23px;margin:9px 0 16px;line-height:1.35}.bus-card h2 span{font-family:'DM Sans',sans-serif;opacity:.45}.bus-card .text-button{font-size:12px}.transport-links{display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin-bottom:65px}
+.practical-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-bottom:55px}.practical-card{padding:30px;border:1px solid var(--line);border-radius:22px;background:#fafaf5e8;display:flex;flex-direction:column;align-items:start}.practical-icon{padding:13px;background:#e8eddf;border-radius:14px;margin-bottom:22px;display:grid;place-items:center}.practical-icon svg{width:25px;height:25px}.practical-card h2{font-size:28px;margin-bottom:16px}.practical-card p{font-size:14px;line-height:1.85;color:var(--muted);margin-bottom:22px;flex:1}.practical-card .text-button{font-size:12px}
+.owner-card{padding:40px;background:var(--forest);color:var(--paper);border-radius:24px;display:flex;justify-content:space-between;gap:30px;margin-bottom:70px}.owner-card h2{font-size:38px;margin-bottom:15px}.owner-card p{font-size:14px;line-height:1.8;max-width:480px}.owner-card .eyebrow{color:var(--lime)}.owner-links{display:flex;flex-direction:column;align-items:start;gap:22px;justify-content:center}.owner-links .button{background:var(--lime);color:var(--forest)}.owner-links .text-button{overflow-wrap:anywhere;font-size:13px}
+@media(max-width:1250px){.nav{gap:15px}.nav a{font-size:12px}.header-actions .button{display:none}}
+@media(max-width:900px){.footer-top{grid-template-columns:repeat(3,minmax(0,1fr))}.footer-brand{grid-column:1/-1}.practical-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bus-card{padding:22px;gap:14px}.transport-intro{flex-wrap:wrap}.club-crest{max-width:240px}}
+@media(max-width:640px){.footer-top{grid-template-columns:1fr 1fr;gap:30px}.owner-footer{grid-column:1/-1}.language-control{padding:10px 8px}.language-control svg{width:13px}.practical-grid,.bus-grid{grid-template-columns:1fr;gap:16px}.practical-card{padding:25px}.transport-intro{padding:24px;gap:20px}.transport-brand{gap:14px}.transport-brand>span{width:50px;height:50px}.transport-brand h2{font-size:27px}.transport-intro>a{font-size:11px}.transport-note{padding:21px;font-size:13px}.bus-card h2{font-size:23px}.bus-number{width:43px;height:43px;font-size:22px}.bus-card{padding:22px;gap:16px}.owner-card{padding:27px;flex-direction:column}.club-crest{justify-self:start;max-width:260px}.ambient-doves img{width:90vw;top:22%;right:-20%}}
+@media(prefers-reduced-motion:reduce){.ambient-doves img{animation:none!important;translate:none!important}}
+@media print{.ambient-doves{display:none}}
