@@ -1,0 +1,13 @@
+{
+  "name": "tetouan-discovery",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A bilingual photographic guide to Tetouan, Morocco",
+  "scripts": {
+    "dev": "node scripts/server.mjs",
+    "start": "node scripts/server.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
