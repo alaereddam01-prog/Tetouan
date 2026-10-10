@@ -14,6 +14,7 @@ A travel and cultural guide to Tétouan in French, Arabic, English and Spanish. 
 - Search across four languages, category filters, saved places and three downloadable itineraries.
 - Owner contact: [Instagram @alae_rdd](https://www.instagram.com/alae_rdd/) and [email](mailto:alae200409rd@gmail.com).
 - Transparent dove artwork with gentle background animation.
+- Voices of Tétouan: five sourced audio stories, 15 locally generated neural MP3s in French, Spanish and English, and Arabic browser narration. Seek, playback speed, transcripts and a persistent mini-player work across navigation. [Voice credits and regeneration](AUDIO.md).
 - Arabic RTL layouts, responsive navigation, keyboard-accessible dialogs and reduced-motion support.
 
 ## Run locally
@@ -44,6 +45,10 @@ The checks validate all four languages, actual JPEG dimensions, local assets, bu
 | `dist/extra-data.js` | Additional districts, references and owner contact |
 | `dist/extra-pages.js` | Bus directory and practical visitor pages |
 | `dist/photo-dimensions.js` | Verified dimensions of the deployed photographs |
+| `dist/audio-guide.js` | Persistent media controller, speech fallback and audio guide interface |
+| `dist/audio-stories.js` | Original four-language scripts and historical sources |
+| `dist/audio-recordings.js` | Verified narration durations, transcript hashes and attribution |
+| `dist/audio-guide.css` | Audio layouts extending the existing visual identity |
 | `dist/app.js` | Shared SVG interface icons and wordmark |
 | `dist/styles.css` | Visual identity, responsive layouts, RTL, animations and print styles |
 | `dist/assets/` | Locally stored, compressed photographs |
@@ -80,4 +85,6 @@ The MAT crest is an official club mark and remains the property of its rights ho
 
 ## Validation
 
-The release was checked in Microsoft Edge on desktop and a 390px mobile viewport. Browser checks exercise all 13 routes, four-language rendering and search, 19 districts, details and keyboard closing, saved-place persistence, localized itinerary downloads, actual HD gallery dimensions, bus filtering, owner links, the official crest, responsive navigation and reduced motion. Local image loading and JavaScript errors are checked as well.
+The release was checked in Microsoft Edge on desktop and a 390px mobile viewport. Browser checks exercise all 14 routes, four-language rendering and search, 19 districts, details and keyboard closing, saved-place persistence, localized itinerary downloads, actual HD gallery dimensions, bus filtering, owner links, the official crest, responsive navigation and reduced motion. Local image loading and JavaScript errors are checked as well.
+
+Audio validation plays all 15 MP3s in the browser and checks pause/replay, seeking, speed, place and history launch buttons, navigation persistence and language switching. Layout checks cover 360, 390, 768, 1200 and 1280px widths in all four languages. Controlled speech events verify Arabic fallback, unavailable voices, failed recordings and cancellation without overlapping voices. This device has no installed Arabic voice, so real Arabic pronunciation was not assessed here. Audio progress is exact for recordings and estimated for browser speech.

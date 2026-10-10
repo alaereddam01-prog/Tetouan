@@ -3,14 +3,23 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 const root = path.resolve('dist');
 const port = Number(process.env.PORT || 4173);
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json', '.woff2': 'font/woff2' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json', '.woff2': 'font/woff2', '.mp3': 'audio/mpeg' };
 http.createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
     const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (file !== root && !file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
     const bytes = await readFile(file);
-    res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
-    res.end(bytes);
+    const headers={'Content-Type':types[path.extname(file)]||'application/octet-stream','Cache-Control':'no-cache','Accept-Ranges':'bytes'};
+    const range=req.headers.range?.match(/^bytes=(\d*)-(\d*)$/);
+    if(range){
+      const start=range[1]?Number(range[1]):Math.max(0,bytes.length-Number(range[2]));
+      const end=range[1]&&range[2]?Math.min(bytes.length-1,Number(range[2])):bytes.length-1;
+      if(start>end||start>=bytes.length){res.writeHead(416,{'Content-Range':`bytes */${bytes.length}`}).end();return;}
+      res.writeHead(206,{...headers,'Content-Range':`bytes ${start}-${end}/${bytes.length}`,'Content-Length':end-start+1});
+      res.end(req.method==='HEAD'?undefined:bytes.subarray(start,end+1));return;
+    }
+    res.writeHead(200,{...headers,'Content-Length':bytes.length});
+    res.end(req.method==='HEAD'?undefined:bytes);
   } catch { res.writeHead(404).end('Not found'); }
 }).listen(port, '127.0.0.1', () => console.log(`Local: http://127.0.0.1:${port}`));

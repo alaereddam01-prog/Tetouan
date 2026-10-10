@@ -1,4 +1,8 @@
 const icons = {
+ headphones:'<path d="M4 14v-3a8 8 0 0 1 16 0v3M4 12H3v7h4v-7ZM20 12h1v7h-4v-7Z"/>',
+ pause:'<path d="M8 5v14M16 5v14"/>',
+ rewind:'<path d="m11 5-8 7 8 7V5Zm10 0-8 7 8 7V5Z"/>',
+ forward:'<path d="m3 5 8 7-8 7V5Zm10 0 8 7-8 7V5Z"/>',
  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>',
  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>',

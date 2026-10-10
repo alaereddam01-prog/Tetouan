@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {audioStories, storyForEntry} from '../dist/audio-stories.js';
+import {audioRecordings} from '../dist/audio-recordings.js';
+import {audioLabels} from '../dist/audio-i18n.js';
 import { allEntries, photos, sources, routes, timeline, places } from '../dist/data.js';
 import { uiTranslations } from '../dist/i18n.js';
 import { busLines } from '../dist/extra-pages.js';
@@ -21,6 +25,25 @@ for (const item of allEntries) {
   for (const id of item.sourceIds) assert(sources[id], `${item.id}: unknown source ${id}`);
 }
 for (const route of routes) for (const id of route.stops) assert(unique.has(id), `Unknown itinerary stop: ${id}`);
+assert.equal(audioStories.length,5);
+assert.equal(new Set(audioStories.map(s=>s.id)).size,5);
+let recordings=0;
+for(const story of audioStories){
+ assert(photos.some(p=>p.id===story.photoId),`Audio photo: ${story.id}`);
+ for(const id of story.entryIds)assert(unique.has(id),`Audio entry: ${id}`);
+ for(const id of story.sourceIds)assert(sources[id],`Audio source: ${id}`);
+ for(const lang of languages){
+  assert(story.title[lang]&&story.intro[lang],`Audio translation: ${story.id}/${lang}`);
+  assert(story.paragraphs[lang].length>=3&&story.paragraphs[lang].every(p=>typeof p==='string'&&p.length>40),`Audio transcript: ${story.id}/${lang}`);
+  const recording=audioRecordings[story.id]?.[lang];if(!recording)continue;
+  recordings++;assert(recording.duration>10&&recording.duration<300);assert(recording.license&&recording.attribution);
+  assert.equal(recording.transcriptHash,createHash('sha256').update(story.paragraphs[lang].join('\n\n')).digest('hex'),`Outdated recording: ${story.id}/${lang}`);
+  const mp3=await readFile(`dist/${recording.src}`);assert(mp3.length>5000,`Empty recording: ${recording.src}`);
+ }
+}
+assert.equal(recordings,15);
+for(const lang of languages){assert.deepEqual(Object.keys(audioLabels[lang]).sort(),Object.keys(audioLabels.en).sort());for(const label of Object.values(audioLabels[lang]))assert(label&&typeof label==='string'||label&&typeof label==='object');}
+assert.equal(storyForEntry(allEntries.find(e=>e.id==='mat-story')),null,'Football belongs on its own page');
 // Read actual JPEG frame dimensions; metadata alone is insufficient.
 function jpegDimensions(buffer){
  assert.equal(buffer.readUInt16BE(0),0xffd8,'Invalid JPEG');let i=2;
@@ -31,7 +54,7 @@ for (const photo of photos) { await access(`dist/${photo.src}`); const dimension
 assert.equal(places.filter(p=>p.type==='district').length,19);
 assert.equal(busLines.length,25);assert.equal(new Set(busLines.map(x=>x.number)).size,25);
 for(const line of busLines){assert(line.sourceUrl.startsWith('https://moovitapp.com/'));assert.equal(line.checkedOn,'2026-10-08');assert(!('fare' in line)&&!('hours' in line));}
-for (const file of ['dist/main.js','dist/app.js','dist/data.js','dist/extra-data.js','dist/extra-pages.js','dist/content-locales.js','dist/i18n.js','scripts/server.mjs']) {
+for (const file of ['dist/main.js','dist/app.js','dist/data.js','dist/extra-data.js','dist/extra-pages.js','dist/content-locales.js','dist/i18n.js','dist/audio-guide.js','dist/audio-i18n.js','dist/audio-stories.js','dist/audio-recordings.js','scripts/server.mjs']) {
   const result=spawnSync(process.execPath,['--check',file],{encoding:'utf8'}); assert.equal(result.status,0,result.stderr);
 }
 const html=await readFile('dist/index.html','utf8');
@@ -44,4 +67,4 @@ for(const file of ['dist/main.js','dist/extra-pages.js']){
   if(args.length===2)assert(uiTranslations[args[0]]?.en&&uiTranslations[args[0]]?.es,`Missing UI translation: ${args[0]}`);
  }
 }
-console.log(`Verified ${allEntries.length} entries in four languages, ${photos.length} genuine Full HD photographs, 19 districts, 25 sourced bus labels and ${routes.length} itineraries. JavaScript syntax passed.`);
+console.log(`Verified ${allEntries.length} entries in four languages, ${photos.length} genuine Full HD photographs, 19 districts, 25 sourced bus labels, ${routes.length} itineraries and five audio stories with 15 recordings matching their transcripts. JavaScript syntax passed.`);
