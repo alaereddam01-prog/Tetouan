@@ -183,6 +183,7 @@ export function createAudioGuide({getLanguage,escape,icon,image,head,sourceLinks
  document.addEventListener('input',event=>{if(event.target.matches('[data-audio-seek]')){state.seekPreview=Number(event.target.value)/1000;update();}});
  document.addEventListener('change',event=>{if(event.target.matches('[data-audio-seek]'))seek(Number(event.target.value)/1000);if(event.target.matches('[data-audio-speed]'))changeRate(Number(event.target.value));});
  window.addEventListener('pagehide',halt);
+ document.addEventListener('tetouan-video-start',()=>{if(state.playing)pause();});
  setInterval(()=>{
   if(state.engine!=='speech'||!state.playing||!chunkStartedAt)return;
   const full=script(),elapsed=(performance.now()-chunkStartedAt)/1000;
